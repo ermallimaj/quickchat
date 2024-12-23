@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         generatedCode = String.valueOf(code);
 
         // Send email with the 2FA code
-        String subject = "SecureApp 2FA Code";
+        String subject = "QuickChat 2FA Code";
         String message = "Your 2FA code is: " + generatedCode;
         EmailSender.sendEmail(this, email, subject, message);
 

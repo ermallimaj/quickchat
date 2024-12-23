@@ -62,7 +62,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         resetCode = String.valueOf(code);
 
         // Send email
-        String subject = "SecureApp Password Reset";
+        String subject = "QuickChat Password Reset";
         String message = "Your password reset code is: " + resetCode;
         EmailSender.sendEmail(this, email, subject, message);
 
