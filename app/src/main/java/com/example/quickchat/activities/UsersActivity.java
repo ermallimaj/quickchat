@@ -1,4 +1,4 @@
-package com.example.myapplication.activities;
+package com.example.quickchat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.R;
-import com.example.myapplication.adapters.UsersAdapter;
-import com.example.myapplication.database.DatabaseHelper;
-import com.example.myapplication.models.User;
+import com.example.quickchat.R;
+import com.example.quickchat.adapters.UsersAdapter;
+import com.example.quickchat.database.DatabaseHelper;
+import com.example.quickchat.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,4 +73,3 @@ public class UsersActivity extends AppCompatActivity {
         usersAdapter.updateList(filteredList);
     }
 }
-
