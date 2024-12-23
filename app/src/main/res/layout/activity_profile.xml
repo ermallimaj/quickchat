@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView_signup"
+    android:id="@+id/scrollView_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/cardview_light_background">
 
     <LinearLayout
-        android:id="@+id/layout_signup"
+        android:id="@+id/layout_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
+        <!-- Back Button and User Avatar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,106 +36,103 @@
                 android:layout_marginStart="16dp"
                 android:contentDescription="User Avatar"
                 android:elevation="4dp"
-                android:src="@drawable/person_add" />
+                android:src="@drawable/account_circle" />
         </LinearLayout>
 
+        <!-- Profile Title -->
         <TextView
             android:id="@+id/tv_profile_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register here"
+            android:text="Profile Information"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginBottom="24dp"
             android:textColor="@color/black" />
 
+        <!-- Email Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_name_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_name_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_surname_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Surname"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_surname_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_phone_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_phone_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_username_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_username_signup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_email_signup"
+            android:id="@+id/til_email_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_email_signup"
+                android:id="@+id/et_email_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Username Input -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_password_signup"
+            android:id="@+id/til_username_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="Username"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_username_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Name Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_name_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Surname Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_surname_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Surname"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_surname_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Phone Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_phone_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone"
             android:layout_marginBottom="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_password_signup"
+                android:id="@+id/et_phone_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
+                android:inputType="phone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Update Profile Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_update_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register" />
+            android:text="Update Profile"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:elevation="4dp"
+            android:layout_marginTop="24dp" />
 
     </LinearLayout>
 </ScrollView>
