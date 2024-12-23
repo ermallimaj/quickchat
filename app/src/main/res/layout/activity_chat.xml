@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- Chat Header -->
+    <TextView
+        android:id="@+id/tv_chat_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chat with User"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <!-- RecyclerView for Messages -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_messages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/tv_chat_header"
+        android:layout_above="@id/message_input_layout"
+        android:padding="8dp" />
+
+    <!-- Input Layout for Sending Messages -->
+    <LinearLayout
+        android:id="@+id/message_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@color/gray">
+
+        <!-- Message Input Field -->
+        <EditText
+            android:id="@+id/et_message_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Type a message"
+            android:padding="8dp"
+            android:background="@drawable/bg_message_input"
+            android:inputType="textMultiLine" />
+
+        <!-- Send Button -->
+        <ImageButton
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="39dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Send"
+            android:src="@drawable/ic_send"
+            app:tint="@color/colorPrimaryDark" />
+    </LinearLayout>
+</RelativeLayout>
