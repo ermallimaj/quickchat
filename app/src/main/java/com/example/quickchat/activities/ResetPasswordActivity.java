@@ -1,4 +1,4 @@
-package com.example.myapplication.activities;
+package com.example.quickchat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.myapplication.R;
-import com.example.myapplication.database.DatabaseHelper;
-import com.example.myapplication.utils.InputValidator;
-import com.example.myapplication.utils.PasswordHasher;
+import com.example.quickchat.R;
+import com.example.quickchat.database.DatabaseHelper;
+import com.example.quickchat.utils.InputValidator;
+import com.example.quickchat.utils.PasswordHasher;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.button.MaterialButton;
 
