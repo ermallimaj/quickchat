@@ -26,4 +26,23 @@
         android:textSize="16sp"
         android:layout_marginStart="16dp"/>
 
+    <!-- Last Message -->
+    <TextView
+        android:id="@+id/tv_last_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last message"
+        android:textSize="14sp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- Timestamp (e.g., time ago) -->
+    <TextView
+        android:id="@+id/tv_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timestamp"
+        android:textSize="12sp"
+        android:layout_marginStart="16dp"
+        android:textColor="@android:color/darker_gray"/>
+
 </LinearLayout>
