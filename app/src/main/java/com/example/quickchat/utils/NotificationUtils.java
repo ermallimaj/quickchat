@@ -11,7 +11,7 @@ import com.example.quickchat.R;
 
 public class NotificationUtils {
 
-    private static final String CHANNEL_ID = "secureapp_channel";
+    private static final String CHANNEL_ID = "quickchat_channel";
 
     public static void showNotification(Context context, String title, String message) {
         createNotificationChannel(context);
@@ -28,8 +28,8 @@ public class NotificationUtils {
 
     private static void createNotificationChannel(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String name = "SecureApp Channel";
-            String description = "Channel for SecureApp notifications";
+            String name = "QuickChat Channel";
+            String description = "Channel for QuickChat notifications";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
