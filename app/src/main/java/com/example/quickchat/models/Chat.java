@@ -19,6 +19,14 @@ public class Chat implements Serializable {
         return username;
     }
 
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public String getLastMessage() {
         return lastMessage;
     }
