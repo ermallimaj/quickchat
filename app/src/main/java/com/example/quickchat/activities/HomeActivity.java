@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewChats.setLayoutManager(new LinearLayoutManager(this));
 
         // Get recent chats
-        List<Chat> chatList = dbHelper.getRecentChatsForUser(email);
+        List<Chat> chatList = dbHelper.getConversationsForUser(email);
         ChatAdapter chatAdapter = new ChatAdapter(chatList);
         recyclerViewChats.setAdapter(chatAdapter);
 

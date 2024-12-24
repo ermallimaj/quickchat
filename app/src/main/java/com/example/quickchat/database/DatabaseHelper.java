@@ -15,6 +15,8 @@ import com.example.quickchat.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "secureapp.db";
@@ -139,28 +141,69 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Retrieve recent chats for a user
     @SuppressLint("Range")
-    public List<Chat> getRecentChatsForUser(String email) {
+    public List<Chat> getConversationsForUser(String email) {
         List<Chat> chatList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT u.username, m." + COLUMN_MESSAGE_TEXT + ", m." + COLUMN_TIMESTAMP +
+
+        String query = "SELECT m." + COLUMN_MESSAGE_TEXT + ", m." + COLUMN_TIMESTAMP + ", m." + COLUMN_USER_ID + ", m." + COLUMN_RECEIVER_ID +
+                ", u1.username AS senderUsername, u2.username AS receiverUsername " +
                 " FROM " + TABLE_MESSAGES + " m " +
-                "INNER JOIN " + TABLE_USERS + " u ON (m." + COLUMN_RECEIVER_ID + " = u." + COLUMN_ID +
-                " OR m." + COLUMN_USER_ID + " = u." + COLUMN_ID + ")" +
+                "INNER JOIN " + TABLE_USERS + " u1 ON m." + COLUMN_USER_ID + " = u1." + COLUMN_ID +
+                " INNER JOIN " + TABLE_USERS + " u2 ON m." + COLUMN_RECEIVER_ID + " = u2." + COLUMN_ID +
                 " WHERE m." + COLUMN_USER_ID + " = (SELECT " + COLUMN_ID + " FROM " + TABLE_USERS + " WHERE " + COLUMN_EMAIL + " = ?)" +
-                " ORDER BY m." + COLUMN_TIMESTAMP + " DESC LIMIT 10";
-        Cursor cursor = db.rawQuery(query, new String[]{email});
+                " OR m." + COLUMN_RECEIVER_ID + " = (SELECT " + COLUMN_ID + " FROM " + TABLE_USERS + " WHERE " + COLUMN_EMAIL + " = ?)" +
+                " ORDER BY m." + COLUMN_TIMESTAMP + " DESC";
+
+        Cursor cursor = db.rawQuery(query, new String[]{email, email});
 
         if (cursor != null) {
+            Map<String, Chat> conversations = new HashMap<>();
+
             while (cursor.moveToNext()) {
-                chatList.add(new Chat(
-                        cursor.getString(cursor.getColumnIndex("username")),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_MESSAGE_TEXT)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP))
-                ));
+                String message = cursor.getString(cursor.getColumnIndex(COLUMN_MESSAGE_TEXT));
+                String timestamp = cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP));
+                String senderId = cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID));
+                String receiverId = cursor.getString(cursor.getColumnIndex(COLUMN_RECEIVER_ID));
+                String senderUsername = cursor.getString(cursor.getColumnIndex("senderUsername"));
+                String receiverUsername = cursor.getString(cursor.getColumnIndex("receiverUsername"));
+
+                // Determine the logged-in user's ID
+                String loggedInUserId = getUserIdByEmail(email, db);
+
+                // Determine the other user's username
+                String otherUsername = senderId.equals(loggedInUserId) ? receiverUsername : senderUsername;
+
+                // Create a unique key for the conversation
+                String conversationKey = senderId.compareTo(receiverId) < 0 ?
+                        senderId + "_" + receiverId : receiverId + "_" + senderId;
+
+                // Add the conversation to the map
+                if (!conversations.containsKey(conversationKey)) {
+                    conversations.put(conversationKey, new Chat(otherUsername, message, timestamp));
+                } else {
+                    Chat currentChat = conversations.get(conversationKey);
+                    currentChat.setLastMessage(message);
+                    currentChat.setTimestamp(timestamp);
+                }
             }
+
+            chatList.addAll(conversations.values());
             cursor.close();
         }
+
         return chatList;
+    }
+
+    // Helper method to fetch user ID by email
+    private String getUserIdByEmail(String email, SQLiteDatabase db) {
+        String query = "SELECT " + COLUMN_ID + " FROM " + TABLE_USERS + " WHERE " + COLUMN_EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+        if (cursor != null && cursor.moveToFirst()) {
+            @SuppressLint("Range") String userId = cursor.getString(cursor.getColumnIndex(COLUMN_ID));
+            cursor.close();
+            return userId;
+        }
+        return null;
     }
 
     // Retrieve all users
