@@ -3,14 +3,14 @@ package com.example.quickchat.models;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    private int messageId;         // Corresponds to message_id in the database
-    private String text;           // Corresponds to message_text in the database
-    private boolean isSent;        // Corresponds to is_sent in the database
-    private long timestamp;        // Corresponds to timestamp in the database
-    private int userId;            // Corresponds to user_id in the database
-    private int receiverId;        // Corresponds to receiver_id in the database
+    private int messageId;
+    private String text;
+    private boolean isSent;
+    private long timestamp;
+    private int userId;
+    private int receiverId;
 
-    // Constructor with all columns, including message_id
+
     public Message(int messageId, String text, boolean isSent, long timestamp, int userId, int receiverId) {
         this.messageId = messageId;
         this.text = text;
@@ -20,7 +20,6 @@ public class Message implements Serializable {
         this.receiverId = receiverId;
     }
 
-    // Getters and setters
     public int getMessageId() {
         return messageId;
     }

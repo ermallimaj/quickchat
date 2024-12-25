@@ -7,26 +7,40 @@ import java.util.concurrent.TimeUnit;
 
 public class TimeUtils {
 
-    // Helper method to format time ago
     public static String formatTimeAgo(String timestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {
-            Date messageDate = dateFormat.parse(timestamp);
-            long diffInMillis = new Date().getTime() - messageDate.getTime();
-            long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis);
-            long diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis);
-            long diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis);
-
-            if (diffInMinutes < 60) {
-                return diffInMinutes + " minutes ago";
-            } else if (diffInHours < 24) {
-                return diffInHours + " hours ago";
+            if (timestamp.length() > 10) {
+                long messageTimestamp = Long.parseLong(timestamp);
+                return getTimeAgoFromMillis(messageTimestamp);
             } else {
-                return diffInDays + " days ago";
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                Date messageDate = dateFormat.parse(timestamp);
+                if (messageDate != null) {
+                    return getTimeAgoFromMillis(messageDate.getTime());
+                } else {
+                    return "Unknown time";
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
             return "Unknown time";
+        }
+    }
+
+    private static String getTimeAgoFromMillis(long messageTimestamp) {
+        long currentTime = System.currentTimeMillis();
+        long diffInMillis = currentTime - messageTimestamp;
+
+        long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis);
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis);
+        long diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis);
+
+        if (diffInMinutes < 60) {
+            return diffInMinutes + " minute" + (diffInMinutes != 1 ? "s" : "") + " ago";
+        } else if (diffInHours < 24) {
+            return diffInHours + " hour" + (diffInHours != 1 ? "s" : "") + " ago";
+        } else {
+            return diffInDays + " day" + (diffInDays != 1 ? "s" : "") + " ago";
         }
     }
 }

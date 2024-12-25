@@ -1,6 +1,7 @@
 package com.example.quickchat.adapters;
 
-import static com.example.quickchat.activities.HomeActivity.formatTimeAgo;
+
+import static com.example.quickchat.utils.TimeUtils.formatTimeAgo;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +38,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.tvUsername.setText(chat.getUsername());
         holder.tvLastMessage.setText(chat.getLastMessage());
         holder.tvTimestamp.setText(formatTimeAgo(chat.getTimestamp()));
-        // You can set profile image here if you have it
     }
 
     @Override
     public int getItemCount() {
         return chatList.size();
+    }
+
+    public void removeItem(int position) {
+        chatList.remove(position);
+        notifyItemRemoved(position);
     }
 
     static class ChatViewHolder extends RecyclerView.ViewHolder {

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     private int id;
     private String username;
+    private String password;
     private String email;
     private String name;
     private String surname;
@@ -18,6 +19,15 @@ public class User implements Serializable {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
+    }
+
+    public User(String name, String surname, String phone, String username, String email, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     // Default constructor
@@ -38,6 +48,14 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
