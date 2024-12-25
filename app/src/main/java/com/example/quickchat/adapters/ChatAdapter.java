@@ -1,15 +1,18 @@
 package com.example.quickchat.adapters;
 
+import static com.example.quickchat.activities.HomeActivity.formatTimeAgo;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quickchat.R;
 import com.example.quickchat.models.Chat;
-import com.example.quickchat.utils.TimeUtils;
 
 import java.util.List;
 
@@ -21,21 +24,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         this.chatList = chatList;
     }
 
+    @NonNull
     @Override
-    public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // Inflate the layout for each chat item (using your previous layout)
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, parent, false);
+    public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
         return new ChatViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = chatList.get(position);
         holder.tvUsername.setText(chat.getUsername());
-        // Here, you can also bind lastMessage and timestamp if you have these properties in your Chat model
-
-        // If you have timestamp in your model, format it
-        holder.tvTimestamp.setText(TimeUtils.formatTimeAgo(chat.getTimestamp()));
+        holder.tvLastMessage.setText(chat.getLastMessage());
+        holder.tvTimestamp.setText(formatTimeAgo(chat.getTimestamp()));
+        // You can set profile image here if you have it
     }
 
     @Override
@@ -43,14 +45,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         return chatList.size();
     }
 
-    public static class ChatViewHolder extends RecyclerView.ViewHolder {
+    static class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvUsername, tvTimestamp;  // You can add tvLastMessage if needed
+        TextView tvUsername, tvLastMessage, tvTimestamp;
+        ImageView ivProfile;
 
-        public ChatViewHolder(View itemView) {
+        public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvUsername = itemView.findViewById(R.id.tv_chat_username);
-            tvTimestamp = itemView.findViewById(R.id.tv_timestamp); // assuming timestamp TextView exists in XML
+            tvUsername = itemView.findViewById(R.id.tv_username);
+            tvLastMessage = itemView.findViewById(R.id.tv_last_message);
+            tvTimestamp = itemView.findViewById(R.id.tv_timestamp);
+            ivProfile = itemView.findViewById(R.id.iv_profile);
         }
     }
 }
