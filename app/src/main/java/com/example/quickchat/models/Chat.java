@@ -8,7 +8,6 @@ public class Chat implements Serializable {
     private String lastMessage;
     private String timestamp;
 
-    // Constructor to include last message and timestamp
     public Chat(String username, String lastMessage, String timestamp) {
         this.username = username;
         this.lastMessage = lastMessage;

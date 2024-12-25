@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="16dp">
 
+    <!-- Profile Image -->
     <ImageView
         android:id="@+id/iv_profile"
         android:layout_width="40dp"
@@ -13,6 +13,7 @@
         android:src="@drawable/account_circle"
         android:layout_marginRight="16dp"/>
 
+    <!-- Chat Info (Username and Last Message) -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -33,13 +34,22 @@
             android:layout_height="wrap_content"
             android:text="Last message"
             android:textSize="14sp"/>
-
     </LinearLayout>
 
+    <!-- Timestamp -->
     <TextView
         android:id="@+id/tv_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1h ago"
         android:textSize="12sp"/>
+
+    <!-- Delete Button (Initially hidden) -->
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:visibility="gone"
+        android:contentDescription="Delete"/>
 </LinearLayout>

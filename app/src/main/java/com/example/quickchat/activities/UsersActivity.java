@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quickchat.R;
 import com.example.quickchat.adapters.UsersAdapter;
 import com.example.quickchat.database.DatabaseHelper;
+import com.example.quickchat.database.UserDao;
 import com.example.quickchat.models.User;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class UsersActivity extends AppCompatActivity {
     private UsersAdapter usersAdapter;
     private List<User> usersList;
     private List<User> filteredList;
-    private DatabaseHelper databaseHelper;
+    private UserDao userDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,9 @@ public class UsersActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.et_search_users);
         usersRecyclerView = findViewById(R.id.recycler_view_users);
 
-        databaseHelper = new DatabaseHelper(this);
-        usersList = databaseHelper.getAllUsers(); // Fetch users from the database
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        userDao = new UserDao(dbHelper.getWritableDatabase());
+        usersList = userDao.getAllUsers();
         filteredList = new ArrayList<>(usersList);
 
         usersAdapter = new UsersAdapter(filteredList, user -> {

@@ -22,7 +22,7 @@
             <ImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="30dp"
                 android:background="@null"
                 android:contentDescription="Back"
                 android:src="@drawable/arrow_back" />
