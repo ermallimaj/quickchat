@@ -98,24 +98,43 @@ public class HomeActivity extends AppCompatActivity {
 
     // Helper method to format time ago
     public static String formatTimeAgo(String timestamp) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {
-            Date messageDate = dateFormat.parse(timestamp);
-            long diffInMillis = new Date().getTime() - messageDate.getTime();
-            long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis);
-            long diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis);
-            long diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis);
-
-            if (diffInMinutes < 60) {
-                return diffInMinutes + " minutes ago";
-            } else if (diffInHours < 24) {
-                return diffInHours + " hours ago";
+            // Check if the timestamp is a valid long (milliseconds timestamp)
+            if (timestamp.length() > 10) {  // If the length is greater than 10, assume it's in milliseconds (long format)
+                long messageTimestamp = Long.parseLong(timestamp);
+                return getTimeAgoFromMillis(messageTimestamp);
             } else {
-                return diffInDays + " days ago";
+                // Otherwise, it's a string in "yyyy-MM-dd HH:mm:ss" format
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                Date messageDate = dateFormat.parse(timestamp);
+                if (messageDate != null) {
+                    return getTimeAgoFromMillis(messageDate.getTime());
+                } else {
+                    return "Unknown time";
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "Unknown time";
+            return "Unknown time";  // In case of any error, return a fallback message
         }
     }
+
+    // Helper method to format time from milliseconds
+    private static String getTimeAgoFromMillis(long messageTimestamp) {
+        long currentTime = System.currentTimeMillis();
+        long diffInMillis = currentTime - messageTimestamp;
+
+        long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis);
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis);
+        long diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis);
+
+        if (diffInMinutes < 60) {
+            return diffInMinutes + " minutes ago";
+        } else if (diffInHours < 24) {
+            return diffInHours + " hours ago";
+        } else {
+            return diffInDays + " days ago";
+        }
+    }
+
 }
