@@ -53,6 +53,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         notifyItemRemoved(position);
     }
 
+    public Chat getItem(int position) {
+        return chatList.get(position);
+    }
+
     public interface OnItemClickListener {
         void onItemClick(Chat chat);
     }

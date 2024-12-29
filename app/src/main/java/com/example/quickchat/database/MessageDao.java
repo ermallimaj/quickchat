@@ -139,10 +139,23 @@ public class MessageDao {
         return chatList;
     }
 
-    public void deleteMessagesForConversation(int userId, int receiverId) {
-        String whereClause = "(user_id = ? AND receiver_id = ?) OR (user_id = ? AND receiver_id = ?)";
-        String[] whereArgs = new String[]{String.valueOf(userId), String.valueOf(receiverId),
-                String.valueOf(receiverId), String.valueOf(userId)};
-        db.delete("messages", whereClause, whereArgs);
+    public void deleteMessagesForConversation(String email, int otherUserId) {
+        int loggedInUserId = userDao.getUserIdByEmail(email);
+        if (loggedInUserId <= 0) {
+            Log.e("deleteMessagesForConversation", "Invalid logged-in user ID: " + loggedInUserId);
+            return;
+        }
+
+        String whereClause = "(" + DatabaseConstants.COLUMN_USER_ID + " = ? AND " + DatabaseConstants.COLUMN_RECEIVER_ID + " = ?) " +
+                "OR (" + DatabaseConstants.COLUMN_USER_ID + " = ? AND " + DatabaseConstants.COLUMN_RECEIVER_ID + " = ?)";
+        String[] whereArgs = {String.valueOf(loggedInUserId), String.valueOf(otherUserId),
+                String.valueOf(otherUserId), String.valueOf(loggedInUserId)};
+
+        int rowsDeleted = db.delete(DatabaseConstants.TABLE_MESSAGES, whereClause, whereArgs);
+        if (rowsDeleted > 0) {
+            Log.d("deleteMessages", "Successfully deleted " + rowsDeleted + " messages for conversation.");
+        } else {
+            Log.d("deleteMessages", "No messages found to delete for this conversation.");
+        }
     }
 }
