@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.quickchat.models.User;
 import com.example.quickchat.utils.DatabaseConstants;
@@ -133,16 +134,21 @@ public class UserDao {
     }
 
     @SuppressLint("Range")
-    public static String getUserIdByEmail(String email, SQLiteDatabase db) {
-        String userId = null;
+    public int getUserIdByEmail(String email) {
+        int userId = -1;
         Cursor cursor = null;
         try {
             String query = "SELECT " + DatabaseConstants.COLUMN_ID + " FROM " + DatabaseConstants.TABLE_USERS +
                     " WHERE " + DatabaseConstants.COLUMN_EMAIL + " = ?";
             cursor = db.rawQuery(query, new String[]{email});
+
             if (cursor != null && cursor.moveToFirst()) {
-                userId = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COLUMN_ID));
+                userId = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.COLUMN_ID));
+            } else {
+                Log.e("UserDao", "No user found for email: " + email);
             }
+        } catch (Exception e) {
+            Log.e("UserDao", "Error fetching user ID by email: " + email, e);
         } finally {
             if (cursor != null) {
                 cursor.close();

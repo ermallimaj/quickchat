@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.NewChatActivity"
+        <activity android:name=".activities.UsersListActivity"
             android:label="New Chat"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>

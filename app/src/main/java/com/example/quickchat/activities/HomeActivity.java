@@ -3,13 +3,14 @@ package com.example.quickchat.activities;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.quickchat.R;
 import com.example.quickchat.adapters.ChatAdapter;
 import com.example.quickchat.database.DatabaseHelper;
@@ -17,11 +18,8 @@ import com.example.quickchat.database.MessageDao;
 import com.example.quickchat.database.UserDao;
 import com.example.quickchat.models.Chat;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -48,6 +46,8 @@ public class HomeActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         username = userDao.getUsernameByEmail(email);
 
+        int currentUserId = userDao.getUserIdByEmail(email);
+
         if (username != null) {
             tvWelcome.setText("Welcome, " + username);
         } else {
@@ -57,10 +57,16 @@ public class HomeActivity extends AppCompatActivity {
         recyclerViewChats.setLayoutManager(new LinearLayoutManager(this));
 
         List<Chat> chatList = messageDao.getConversationsForUser(email);
-        chatAdapter = new ChatAdapter(chatList);
+
+        chatAdapter = new ChatAdapter(chatList, chat -> {
+            Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
+            intent.putExtra("currentUserId", currentUserId);
+            intent.putExtra("chatUserId", chat.getOtherUserId());
+            startActivity(intent);
+        });
+
         recyclerViewChats.setAdapter(chatAdapter);
 
-        // ItemTouchHelper for swipe-to-delete
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -71,18 +77,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 chatAdapter.removeItem(position);
-            }
-
-            public void onChildDraw(
-                    @NonNull RecyclerView recyclerView,
-                    @NonNull Canvas canvas,
-                    @NonNull RecyclerView.ViewHolder viewHolder,
-                    float dX,
-                    float dY,
-                    int actionState,
-                    boolean isCurrentlyActive
-            ) {
-                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
 
@@ -98,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(profileIntent);
                 return true;
             } else if (id == R.id.nav_new_chat) {
-                Intent chatIntent = new Intent(HomeActivity.this, NewChatActivity.class);
+                Intent chatIntent = new Intent(HomeActivity.this, UsersListActivity.class);
                 startActivity(chatIntent);
                 return true;
             } else if (id == R.id.nav_logout) {

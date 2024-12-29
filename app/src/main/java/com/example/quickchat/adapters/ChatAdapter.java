@@ -1,6 +1,5 @@
 package com.example.quickchat.adapters;
 
-
 import static com.example.quickchat.utils.TimeUtils.formatTimeAgo;
 
 import android.view.LayoutInflater;
@@ -20,15 +19,17 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     private List<Chat> chatList;
+    private OnItemClickListener onItemClickListener;
 
-    public ChatAdapter(List<Chat> chatList) {
+    public ChatAdapter(List<Chat> chatList, OnItemClickListener onItemClickListener) {
         this.chatList = chatList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inbox, parent, false);
         return new ChatViewHolder(view);
     }
 
@@ -38,6 +39,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.tvUsername.setText(chat.getUsername());
         holder.tvLastMessage.setText(chat.getLastMessage());
         holder.tvTimestamp.setText(formatTimeAgo(chat.getTimestamp()));
+
+        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(chat));
     }
 
     @Override
@@ -48,6 +51,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void removeItem(int position) {
         chatList.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Chat chat);
     }
 
     static class ChatViewHolder extends RecyclerView.ViewHolder {
