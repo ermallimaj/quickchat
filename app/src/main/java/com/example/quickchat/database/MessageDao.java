@@ -2,9 +2,11 @@ package com.example.quickchat.database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.quickchat.models.Chat;
 import com.example.quickchat.models.Message;
@@ -139,10 +141,10 @@ public class MessageDao {
         return chatList;
     }
 
-    public void deleteMessagesForConversation(String email, int otherUserId) {
+    public void deleteMessagesForConversation(Context context, String email, int otherUserId) {
         int loggedInUserId = userDao.getUserIdByEmail(email);
         if (loggedInUserId <= 0) {
-            Log.e("deleteMessagesForConversation", "Invalid logged-in user ID: " + loggedInUserId);
+            Toast.makeText(context, "Invalid logged-in user ID", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -153,9 +155,9 @@ public class MessageDao {
 
         int rowsDeleted = db.delete(DatabaseConstants.TABLE_MESSAGES, whereClause, whereArgs);
         if (rowsDeleted > 0) {
-            Log.d("deleteMessages", "Successfully deleted " + rowsDeleted + " messages for conversation.");
+            Toast.makeText(context, "Successfully deleted " + rowsDeleted + " messages", Toast.LENGTH_SHORT).show();
         } else {
-            Log.d("deleteMessages", "No messages found to delete for this conversation.");
+            Toast.makeText(context, "No messages found to delete for this conversation", Toast.LENGTH_SHORT).show();
         }
     }
 }

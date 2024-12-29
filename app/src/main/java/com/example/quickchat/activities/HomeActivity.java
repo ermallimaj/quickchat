@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 int otherUserId = chatToDelete.getOtherUserId();
 
-                messageDao.deleteMessagesForConversation(email, otherUserId);
+                messageDao.deleteMessagesForConversation(HomeActivity.this, email, otherUserId);
 
                 viewHolder.itemView.animate()
                         .translationX(swipeDir == ItemTouchHelper.LEFT ? -viewHolder.itemView.getWidth() : viewHolder.itemView.getWidth())
