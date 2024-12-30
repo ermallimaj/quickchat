@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.quickchat.R;
@@ -18,6 +19,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail;
     private MaterialButton btnResetPassword;
+    private ImageButton btnBack;
     private UserDao userDao;
     private String resetCode;
 
@@ -31,6 +33,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.et_email_reset);
         btnResetPassword = findViewById(R.id.btn_reset_password);
+        btnBack = findViewById(R.id.btn_back);
 
         btnResetPassword.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
@@ -45,6 +48,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(ForgotPasswordActivity.this, "Email not found", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        btnBack.setOnClickListener(v -> {
+            finish();
         });
     }
 

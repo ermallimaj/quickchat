@@ -28,6 +28,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerViewMessages;
     private EditText etMessageInput;
     private ImageButton btnSend;
+    private ImageButton btnBack;
 
     private ArrayList<Message> messages;
     private MessageAdapter messageAdapter;
@@ -45,6 +46,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerViewMessages = findViewById(R.id.recycler_view_messages);
         etMessageInput = findViewById(R.id.et_message_input);
         btnSend = findViewById(R.id.btn_send);
+        btnBack = findViewById(R.id.btn_back);
 
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         messageDao = new MessageDao(databaseHelper.getWritableDatabase());
@@ -85,6 +87,11 @@ public class ChatActivity extends AppCompatActivity {
             if (!messageText.isEmpty()) {
                 sendMessage(messageText);
             }
+        });
+
+        // Back button logic
+        btnBack.setOnClickListener(v -> {
+            finish();
         });
     }
 
