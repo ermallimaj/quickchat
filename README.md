@@ -46,8 +46,10 @@ QuickChat is a lightweight and secure Android messaging application that enables
    Open the project in Android Studio.
 
 3. **Set up Email Credentials**:  
-   - Update the `local.properties` file with your email and app-specific password in the `GradleScripts/local.properties` file.  
-   - Ensure the email account has SMTP enabled for sending OTPs.
+   - Update the local.properties file with your email and app-specific password:
+     EMAIL=<your-email>
+     PASSWORD=<your-app-password>
+   - Ensure SMTP is enabled on the email account for sending OTPs.
 
 4. **Build and run**:  
    - Build the project in Android Studio.  
