@@ -34,8 +34,6 @@
         </activity>
         <activity android:name=".activities.ChatActivity" />
 
-        <!-- Receivers -->
-        <receiver android:name=".receivers.AlarmReceiver" />
 
     </application>
 
