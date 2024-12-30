@@ -27,7 +27,7 @@ QuickChat is a lightweight and secure Android messaging application that enables
 
 ## Tech Stack
 
-- **Programming Language**: Kotlin  
+- **Programming Language**: Java  
 - **Database**: SQLite  
 - **Authentication**: Manual Two-Factor Authentication (TFA) implementation using email-based OTP  
 - **UI/UX**: Android Material Design  
