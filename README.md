@@ -38,7 +38,7 @@ QuickChat is a lightweight and secure Android messaging application that enables
 
 1. **Clone the repository**:  
    ```bash
-   git clone [QuickChat Repository](https://github.com/ermallimaj/quickchat.git)
+   git clone https://github.com/ermallimaj/quickchat.git
    cd QuickChat
    ```
 
