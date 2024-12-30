@@ -5,14 +5,23 @@ import java.io.Serializable;
 public class Chat implements Serializable {
 
     private String username;
+    private int otherUserId;
     private String lastMessage;
     private String timestamp;
 
-    // Constructor to include last message and timestamp
-    public Chat(String username, String lastMessage, String timestamp) {
-        this.username = username;
+    public Chat(String otherUsername, String lastMessage, String timestamp, int otherUserId) {
+        this.username = otherUsername;
         this.lastMessage = lastMessage;
         this.timestamp = timestamp;
+        this.otherUserId = otherUserId;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getOtherUserId() {
+        return otherUserId;
     }
 
     public String getUsername() {

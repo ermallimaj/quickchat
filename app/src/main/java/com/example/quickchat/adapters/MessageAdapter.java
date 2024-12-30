@@ -30,10 +30,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         if (viewType == 1) {
-            // Sent message layout
             view = LayoutInflater.from(context).inflate(R.layout.item_message_right, parent, false);
         } else {
-            // Received message layout
             view = LayoutInflater.from(context).inflate(R.layout.item_message_left, parent, false);
         }
         return new MessageViewHolder(view, viewType);
@@ -56,7 +54,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         int currentUserId = preferences.getInt("userId", -1);
 
         Message message = messages.get(position);
-        return message.getUserId() == currentUserId ? 1 : 0; // Sent if userId matches currentUserId
+        return message.getUserId() == currentUserId ? 1 : 0;
     }
 
 
@@ -66,10 +64,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public MessageViewHolder(View itemView, int viewType) {
             super(itemView);
             if (viewType == 1) {
-                // Sent message
                 tvMessage = itemView.findViewById(R.id.tv_message_right);
             } else {
-                // Received message
                 tvMessage = itemView.findViewById(R.id.tv_message_left);
             }
         }

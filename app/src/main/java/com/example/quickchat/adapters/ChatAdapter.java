@@ -1,6 +1,6 @@
 package com.example.quickchat.adapters;
 
-import static com.example.quickchat.activities.HomeActivity.formatTimeAgo;
+import static com.example.quickchat.utils.TimeUtils.formatTimeAgo;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +19,17 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     private List<Chat> chatList;
+    private OnItemClickListener onItemClickListener;
 
-    public ChatAdapter(List<Chat> chatList) {
+    public ChatAdapter(List<Chat> chatList, OnItemClickListener onItemClickListener) {
         this.chatList = chatList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inbox, parent, false);
         return new ChatViewHolder(view);
     }
 
@@ -37,12 +39,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.tvUsername.setText(chat.getUsername());
         holder.tvLastMessage.setText(chat.getLastMessage());
         holder.tvTimestamp.setText(formatTimeAgo(chat.getTimestamp()));
-        // You can set profile image here if you have it
+
+        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(chat));
     }
 
     @Override
     public int getItemCount() {
         return chatList.size();
+    }
+
+    public void removeItem(int position) {
+        chatList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public Chat getItem(int position) {
+        return chatList.get(position);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Chat chat);
     }
 
     static class ChatViewHolder extends RecyclerView.ViewHolder {
