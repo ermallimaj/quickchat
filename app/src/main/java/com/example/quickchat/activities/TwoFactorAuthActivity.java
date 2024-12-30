@@ -2,6 +2,7 @@ package com.example.quickchat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
 
     private TextInputEditText etCode;
     private MaterialButton btnVerify;
+    private ImageButton btnBack;
     private String email, expectedCode;
 
     @Override
@@ -24,6 +26,7 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
 
         etCode = findViewById(R.id.et_2fa_code);
         btnVerify = findViewById(R.id.btn_verify);
+        btnBack = findViewById(R.id.btn_back);
 
         email = getIntent().getStringExtra("email");
         expectedCode = getIntent().getStringExtra("code");
@@ -41,6 +44,13 @@ public class TwoFactorAuthActivity extends AppCompatActivity {
             } else {
                 etCode.setError("Incorrect code");
             }
+        });
+
+        btnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(TwoFactorAuthActivity.this, LoginActivity.class);
+            intent.putExtra("email", email);
+            startActivity(intent);
+            finish();
         });
     }
 }
