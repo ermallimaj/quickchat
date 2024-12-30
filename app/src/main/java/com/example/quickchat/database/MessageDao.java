@@ -2,8 +2,11 @@ package com.example.quickchat.database;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.quickchat.models.Chat;
 import com.example.quickchat.models.Message;
@@ -17,6 +20,7 @@ import java.util.HashMap;
 public class MessageDao {
 
     private final SQLiteDatabase db;
+    private UserDao userDao;
 
     public MessageDao(SQLiteDatabase db) {
         this.db = db;
@@ -90,24 +94,39 @@ public class MessageDao {
 
         if (cursor != null) {
             Map<String, Chat> conversations = new HashMap<>();
+            userDao = new UserDao(db);
+
+            int loggedInUserId = userDao.getUserIdByEmail(email);
+            if (loggedInUserId <= 0) {
+                return chatList;
+            }
 
             while (cursor.moveToNext()) {
                 String message = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COLUMN_MESSAGE_TEXT));
                 String timestamp = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COLUMN_TIMESTAMP));
-                String senderId = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COLUMN_USER_ID));
-                String receiverId = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COLUMN_RECEIVER_ID));
+                int senderId = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.COLUMN_USER_ID));
+                int receiverId = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.COLUMN_RECEIVER_ID));
                 String senderUsername = cursor.getString(cursor.getColumnIndex("senderUsername"));
                 String receiverUsername = cursor.getString(cursor.getColumnIndex("receiverUsername"));
 
-                String loggedInUserId = UserDao.getUserIdByEmail(email, db);
+                if (senderId <= 0 || receiverId <= 0) {
+                    Log.e("getConversationsForUser", "Invalid senderId or receiverId: senderId=" + senderId + ", receiverId=" + receiverId);
+                    continue;
+                }
 
-                String otherUsername = senderId.equals(loggedInUserId) ? receiverUsername : senderUsername;
+                int otherUserId = (senderId == loggedInUserId) ? receiverId : senderId;
+                String otherUsername = (senderId == loggedInUserId) ? receiverUsername : senderUsername;
 
-                String conversationKey = senderId.compareTo(receiverId) < 0 ?
-                        senderId + "_" + receiverId : receiverId + "_" + senderId;
+                if (otherUsername == null) {
+                    Log.e("getConversationsForUser", "Unable to determine otherUsername: senderId=" + senderId + ", receiverId=" + receiverId);
+                    continue;
+                }
+
+                String conversationKey = loggedInUserId < otherUserId ?
+                        loggedInUserId + "_" + otherUserId : otherUserId + "_" + loggedInUserId;
 
                 if (!conversations.containsKey(conversationKey)) {
-                    conversations.put(conversationKey, new Chat(otherUsername, message, timestamp));
+                    conversations.put(conversationKey, new Chat(otherUsername, message, timestamp, otherUserId));
                 } else {
                     Chat currentChat = conversations.get(conversationKey);
                     currentChat.setLastMessage(message);
@@ -122,10 +141,23 @@ public class MessageDao {
         return chatList;
     }
 
-    public void deleteMessagesForConversation(int userId, int receiverId) {
-        String whereClause = "(user_id = ? AND receiver_id = ?) OR (user_id = ? AND receiver_id = ?)";
-        String[] whereArgs = new String[]{String.valueOf(userId), String.valueOf(receiverId),
-                String.valueOf(receiverId), String.valueOf(userId)};
-        db.delete("messages", whereClause, whereArgs);
+    public void deleteMessagesForConversation(Context context, String email, int otherUserId) {
+        int loggedInUserId = userDao.getUserIdByEmail(email);
+        if (loggedInUserId <= 0) {
+            Toast.makeText(context, "Invalid logged-in user ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String whereClause = "(" + DatabaseConstants.COLUMN_USER_ID + " = ? AND " + DatabaseConstants.COLUMN_RECEIVER_ID + " = ?) " +
+                "OR (" + DatabaseConstants.COLUMN_USER_ID + " = ? AND " + DatabaseConstants.COLUMN_RECEIVER_ID + " = ?)";
+        String[] whereArgs = {String.valueOf(loggedInUserId), String.valueOf(otherUserId),
+                String.valueOf(otherUserId), String.valueOf(loggedInUserId)};
+
+        int rowsDeleted = db.delete(DatabaseConstants.TABLE_MESSAGES, whereClause, whereArgs);
+        if (rowsDeleted > 0) {
+            Toast.makeText(context, "Successfully deleted " + rowsDeleted + " messages", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "No messages found to delete for this conversation", Toast.LENGTH_SHORT).show();
+        }
     }
 }

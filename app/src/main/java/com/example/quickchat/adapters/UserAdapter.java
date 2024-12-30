@@ -13,12 +13,12 @@ import com.example.quickchat.models.User;
 
 import java.util.List;
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
 
     private List<User> userList;
     private OnItemClickListener onItemClickListener;
 
-    public UsersAdapter(List<User> userList, OnItemClickListener onItemClickListener) {
+    public UserAdapter(List<User> userList, OnItemClickListener onItemClickListener) {
         this.userList = userList;
         this.onItemClickListener = onItemClickListener;
     }
